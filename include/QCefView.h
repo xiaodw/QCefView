@@ -408,6 +408,15 @@ signals:
   void cefQueryRequest(const QCefBrowserId& browserId, const QCefFrameId& frameId, const QCefQuery& query);
 
   /// <summary>
+  /// Gets called on resource request
+  /// </summary>
+  /// <param name="browserId">The browser id</param>
+  /// <param name="frameId">The frame id</param>
+  /// <param name="url">The resource URL</param>
+  /// <param name="method">The HTTP method (GET, POST, etc.)</param>
+  void resourceRequest(const QCefBrowserId& browserId, const QCefFrameId& frameId, const QString& url, const QString& method);
+
+  /// <summary>
   /// Gets called on invoking method request from web content(Javascript)
   /// </summary>
   /// <param name="browserId">The browser id</param>

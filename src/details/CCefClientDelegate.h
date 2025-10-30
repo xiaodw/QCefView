@@ -108,6 +108,10 @@ public:
                                    const CefString& query,
                                    const int64_t query_id) override;
 
+  virtual void processResourceRequest(CefRefPtr<CefBrowser>& browser,
+                                      CefRefPtr<CefFrame>& frame,
+                                      CefRefPtr<CefRequest>& request) override;
+
   virtual void focusedEditableNodeChanged(CefRefPtr<CefBrowser>& browser,
                                           CefRefPtr<CefFrame>& frame,
                                           bool focusOnEditableNode) override;

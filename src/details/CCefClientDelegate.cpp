@@ -53,6 +53,25 @@ CCefClientDelegate::processQueryRequest(CefRefPtr<CefBrowser>& browser,
 }
 
 void
+CCefClientDelegate::processResourceRequest(CefRefPtr<CefBrowser>& browser,
+                                           CefRefPtr<CefFrame>& frame,
+                                           CefRefPtr<CefRequest>& request)
+{
+  AcquireAndValidateCefViewPrivate(pCefViewPrivate);
+
+  auto b = browser->GetIdentifier();
+  auto f = ValueConvertor::FrameIdC2Q(frame->GetIdentifier());
+  auto url = QString::fromStdString(request->GetURL().ToString());
+  auto method = QString::fromStdString(request->GetMethod().ToString());
+  
+  runInMainThread([pCefViewPrivate, b, f, url, method]() {
+    if (pCefViewPrivate->q_ptr) {
+      emit pCefViewPrivate->q_ptr->resourceRequest(b, f, url, method);
+    }
+  });
+}
+
+void
 CCefClientDelegate::focusedEditableNodeChanged(CefRefPtr<CefBrowser>& browser,
                                                CefRefPtr<CefFrame>& frame,
                                                bool focusOnEditableNode)
