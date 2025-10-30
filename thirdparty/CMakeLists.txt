@@ -9,7 +9,7 @@ endif()
 # fetch CefViewCore project
 FetchContent_Declare(
     CefViewCore
-    GIT_REPOSITORY https://github.com/CefView/CefViewCore.git
+    GIT_REPOSITORY https://github.com/xiaodw/CefViewCore.git
     GIT_TAG ${CEFVIEW_CORE_VERSION}
 )
 
