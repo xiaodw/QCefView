@@ -33,6 +33,10 @@ CCefClientDelegate::onBeforeContextMenu(CefRefPtr<CefBrowser>& browser,
   if (Qt::DefaultContextMenu != policy) {
     // for all non-default value, we clear the menu info to prevent the showing
     model->Clear();
+    if (Qt::CustomContextMenu == policy
+        && !pCefViewPrivate->isOSRModeEnabled_) {
+        emit pCefViewPrivate->q_ptr->customContextMenuRequested(QPoint(params->GetXCoord(), params->GetYCoord()));
+    }
     return;
   }
 
