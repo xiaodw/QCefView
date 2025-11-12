@@ -49,6 +49,16 @@ public:
   bool allowDrag_ = false;
 
   /// <summary>
+  /// Whether automatic zoom scaling is enabled
+  /// </summary>
+  bool autoZoomEnabled_ = true;
+
+  /// <summary>
+  /// User-specified zoom level (used when auto zoom is disabled)
+  /// </summary>
+  double userZoomLevel_ = 1.0;
+
+  /// <summary>
   ///
   /// </summary>
   QCefContextPrivate* pContextPrivate_ = nullptr;
@@ -305,4 +315,10 @@ public:
   void setZoomLevel(double level);
 
   double zoomLevel();
+
+  void setAutoZoomLevel(bool enabled);
+
+  bool autoZoomLevel() const;
+
+  void applyZoomLevel();
 };

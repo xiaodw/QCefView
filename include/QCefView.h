@@ -296,6 +296,18 @@ public:
   /// <returns>the zoom level value.</returns>
   double zoomLevel();
 
+  /// <summary>
+  /// Sets whether automatic zoom scaling is enabled.
+  /// </summary>
+  /// <param name="enabled">True to enable automatic zoom scaling; false to disable it.</param>
+  void setAutoZoomLevel(bool enabled);
+
+  /// <summary>
+  /// Indicates whether automatic zoom scaling is enabled.
+  /// </summary>
+  /// <returns>true if automatic zoom scaling is enabled; otherwise, false.</returns>
+  bool autoZoomLevel() const;
+
 signals:
   /// <summary>
   /// Gets called on loading state changed

@@ -296,6 +296,22 @@ QCefView::zoomLevel()
   return d->zoomLevel();
 }
 
+void
+QCefView::setAutoZoomLevel(bool enabled)
+{
+  Q_D(QCefView);
+
+  d->setAutoZoomLevel(enabled);
+}
+
+bool
+QCefView::autoZoomLevel() const
+{
+  Q_D(const QCefView);
+
+  return d->autoZoomLevel();
+}
+
 QCefView*
 QCefView::onNewBrowser(const QCefFrameId& sourceFrameId,
                        const QString& url,

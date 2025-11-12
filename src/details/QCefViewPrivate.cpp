@@ -1679,12 +1679,11 @@ QCefViewPrivate::setOSRFrameRate(int fps)
 void
 QCefViewPrivate::setZoomLevel(double level)
 {
-  if (pCefBrowser_) {
-    CefRefPtr<CefBrowserHost> host = pCefBrowser_->GetHost();
-    if (host) {
-      host->SetZoomLevel(level);
-    }
+  if (userZoomLevel_ == level) {
+    return;
   }
+  userZoomLevel_ = level;
+  applyZoomLevel();
 }
 
 double
@@ -1698,4 +1697,50 @@ QCefViewPrivate::zoomLevel()
   }
 
   return 0;
+}
+
+void
+QCefViewPrivate::setAutoZoomLevel(bool enabled)
+{
+  if (autoZoomEnabled_ == enabled) {
+    return;
+  }
+  autoZoomEnabled_ = enabled;
+  applyZoomLevel();
+}
+
+bool
+QCefViewPrivate::autoZoomLevel() const
+{
+  return autoZoomEnabled_;
+}
+
+void
+QCefViewPrivate::applyZoomLevel()
+{
+  if (!pCefBrowser_) {
+    return;
+  }
+
+  CefRefPtr<CefBrowserHost> host = pCefBrowser_->GetHost();
+  if (!host) {
+    return;
+  }
+
+  // If auto zoom is disabled, use user-specified zoom level
+  if (!autoZoomEnabled_) {
+    host->SetZoomLevel(userZoomLevel_);
+  } else {
+    Q_Q(QCefView);
+    if (q) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
+      qreal scaleFactor = q->devicePixelRatioF();
+#else
+      qreal scaleFactor = q->devicePixelRatio();
+#endif
+      host->SetZoomLevel(scaleFactor);
+    } else {
+      host->SetZoomLevel(0.0);
+    }
+  }
 }
