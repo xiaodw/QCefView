@@ -95,7 +95,7 @@ CCefClientDelegate::invokeMethodNotify(CefRefPtr<CefBrowser>& browser,
   auto b = browser->GetIdentifier();
   auto f = ValueConvertor::FrameIdC2Q(frame->GetIdentifier());
   QVariantList args;
-  for (int i = 0; i < arguments->GetSize(); i++) {
+  for (unsigned int i = 0; i < arguments->GetSize(); i++) {
     QVariant qV;
     auto cV = arguments->GetValue(i);
     ValueConvertor::CefValueToQVariant(&qV, cV.get());

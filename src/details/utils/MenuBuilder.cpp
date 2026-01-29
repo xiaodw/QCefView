@@ -11,7 +11,7 @@ CreateMenuDataFromCefMenu(CefMenuModel* model)
   if (!model)
     return data;
 
-  for (int i = 0; i < model->GetCount(); i++) {
+  for (unsigned int i = 0; i < model->GetCount(); i++) {
     MenuItem item;
     auto type = model->GetTypeAt(i);
     item.type = (MenuItemType)(type);

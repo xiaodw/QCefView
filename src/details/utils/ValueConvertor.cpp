@@ -70,7 +70,7 @@ ValueConvertor::CefValueToQVariant(QVariant* qVariant, CefValue* cValue)
       auto cList = cValue->GetList();
       auto cCount = cList->GetSize();
       QVariantList qList;
-      for (int i = 0; i < cCount; i++) {
+      for (unsigned int i = 0; i < cCount; i++) {
         auto cVal = cList->GetValue(i);
         QVariant qVal;
         CefValueToQVariant(&qVal, cVal.get());
