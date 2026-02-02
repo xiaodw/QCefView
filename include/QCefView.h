@@ -124,6 +124,25 @@ public:
   void addArchiveResource(const QString& path, const QString& url, const QString& password = "", int priority = 0);
 
   /// <summary>
+  /// Sets the URL route: when visiting fromUrl, return the content of toUrl.
+  /// The document.location will still show fromUrl.
+  /// </summary>
+  /// <param name="fromUrl">The URL to be intercepted</param>
+  /// <param name="toUrl">The URL that provides the content</param>
+  void setUrlRoute(const QString& fromUrl, const QString& toUrl);
+
+  /// <summary>
+  /// Sets multiple URL routes at once.
+  /// </summary>
+  /// <param name="routes">A map of fromUrl to toUrl</param>
+  void setUrlRoutes(const QMap<QString, QString>& routes);
+
+  /// <summary>
+  /// Clears all URL routes.
+  /// </summary>
+  void clearUrlRoutes();
+
+  /// <summary>
   /// Gets the browser id
   /// </summary>
   /// <returns>The browser id</returns>
