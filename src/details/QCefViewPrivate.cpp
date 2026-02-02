@@ -2,6 +2,7 @@
 
 #pragma region stl_headers
 #include <stdexcept>
+#include <cctype>
 #pragma endregion
 
 #pragma region qt_headers
@@ -83,6 +84,11 @@ QCefViewPrivate::createCefBrowser(const QString& url, const QCefSettingPrivate* 
 
   // 2. create browser client handler
   auto pClient = new CefViewBrowserClient(pContextPrivate_->getCefApp(), pClientDelegate);
+  // apply url route map before browser created
+  {
+    QMutexLocker lock(&url_map_mutex_);
+    pClient->SetUrlRouteMap(url_map_);
+  }
 
   // 3. create the browser settings
   CefBrowserSettings browserSettings;
@@ -245,6 +251,62 @@ QCefViewPrivate::addArchiveResource(const QString& path,
 {
   if (pClient_) {
     pClient_->AddArchiveResourceProvider(path.toStdString(), url.toStdString(), password.toStdString(), priority);
+  }
+}
+
+void
+QCefViewPrivate::setUrlRoute(const QString& fromUrl, const QString& toUrl)
+{
+  QMutexLocker lock(&url_map_mutex_);
+  if (toUrl.isEmpty()) {
+    url_map_.erase(fromUrl.toStdString());
+  } else {
+    std::string key = fromUrl.toStdString();
+    size_t pos = key.find("://");
+    if (pos != std::string::npos) {
+      for (size_t i = 0; i < pos + 3; ++i) key[i] = (char)tolower(key[i]);
+      size_t next_slash = key.find('/', pos + 3);
+      size_t end = (next_slash == std::string::npos) ? key.length() : next_slash;
+      for (size_t i = pos + 3; i < end; ++i) key[i] = (char)tolower(key[i]);
+    }
+    url_map_[key] = toUrl.toStdString();
+  }
+  
+  if (pClient_) {
+    pClient_->SetUrlRouteMap(url_map_);
+  }
+}
+
+void
+QCefViewPrivate::setUrlRoutes(const QMap<QString, QString>& routes)
+{
+  QMutexLocker lock(&url_map_mutex_);
+  url_map_.clear();
+  for (auto it = routes.begin(); it != routes.end(); ++it) {
+    std::string key = it.key().toStdString();
+    size_t pos = key.find("://");
+    if (pos != std::string::npos) {
+      for (size_t i = 0; i < pos + 3; ++i) key[i] = (char)tolower(key[i]);
+      size_t next_slash = key.find('/', pos + 3);
+      size_t end = (next_slash == std::string::npos) ? key.length() : next_slash;
+      for (size_t i = pos + 3; i < end; ++i) key[i] = (char)tolower(key[i]);
+    }
+    url_map_[key] = it.value().toStdString();
+  }
+  
+  if (pClient_) {
+    pClient_->SetUrlRouteMap(url_map_);
+  }
+}
+
+void
+QCefViewPrivate::clearUrlRoutes()
+{
+  QMutexLocker lock(&url_map_mutex_);
+  url_map_.clear();
+  
+  if (pClient_) {
+    pClient_->SetUrlRouteMap(url_map_);
   }
 }
 

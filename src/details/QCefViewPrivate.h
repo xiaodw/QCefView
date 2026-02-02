@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #pragma region qt_headers
 #include <QMenu>
 #include <QMutex>
@@ -23,6 +23,7 @@
 
 #include <QCefQuery.h>
 #include <QCefView.h>
+#include <map>
 
 class QCefViewPrivate
   : public QObject
@@ -36,6 +37,9 @@ class QCefViewPrivate
 
 private:
   static QSet<QCefViewPrivate*> sLiveInstances;
+
+  std::map<std::string, std::string> url_map_;
+  QMutex url_map_mutex_;
 
 public:
   /// <summary>
@@ -151,6 +155,12 @@ public:
   void addLocalFolderResource(const QString& path, const QString& url, int priority = 0);
 
   void addArchiveResource(const QString& path, const QString& url, const QString& password = "", int priority = 0);
+
+  void setUrlRoute(const QString& fromUrl, const QString& toUrl);
+
+  void setUrlRoutes(const QMap<QString, QString>& routes);
+
+  void clearUrlRoutes();
 
   void setCefWindowFocus(bool focus);
 

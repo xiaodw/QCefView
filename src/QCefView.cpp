@@ -1,4 +1,4 @@
-﻿#include <QCefView.h>
+#include <QCefView.h>
 
 #pragma region qt_headers
 #include <QPainter>
@@ -91,6 +91,30 @@ QCefView::addArchiveResource(const QString& path,
   Q_D(QCefView);
 
   d->addArchiveResource(path, url, password, priority);
+}
+
+void
+QCefView::setUrlRoute(const QString& fromUrl, const QString& toUrl)
+{
+  Q_D(QCefView);
+
+  d->setUrlRoute(fromUrl, toUrl);
+}
+
+void
+QCefView::setUrlRoutes(const QMap<QString, QString>& routes)
+{
+  Q_D(QCefView);
+
+  d->setUrlRoutes(routes);
+}
+
+void
+QCefView::clearUrlRoutes()
+{
+  Q_D(QCefView);
+
+  d->clearUrlRoutes();
 }
 
 QCefBrowserId
