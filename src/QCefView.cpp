@@ -1,4 +1,4 @@
-#include <QCefView.h>
+﻿#include <QCefView.h>
 
 #pragma region qt_headers
 #include <QPainter>
@@ -115,6 +115,22 @@ QCefView::clearUrlRoutes()
   Q_D(QCefView);
 
   d->clearUrlRoutes();
+}
+
+void
+QCefView::setHeader(const QString& key, const QString& value)
+{
+  Q_D(QCefView);
+
+  d->setHeader(key, value);
+}
+
+void
+QCefView::clearHeader()
+{
+  Q_D(QCefView);
+
+  d->clearHeader();
 }
 
 QCefBrowserId

@@ -142,6 +142,10 @@ public:
   /// </summary>
   void clearUrlRoutes();
 
+  void setHeader(const QString& key, const QString& value);
+
+  void clearHeader();
+
   /// <summary>
   /// Gets the browser id
   /// </summary>

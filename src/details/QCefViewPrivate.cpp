@@ -311,6 +311,28 @@ QCefViewPrivate::clearUrlRoutes()
 }
 
 void
+QCefViewPrivate::setHeader(const QString& key, const QString& value)
+{
+  QMutexLocker lock(&header_map_mutex_);
+  header_map_[key.toStdString()] = value.toStdString();
+ 
+  if (pClient_) {
+    pClient_->SetRequestHeader(header_map_);
+  }
+}
+
+void
+QCefViewPrivate::clearHeader()
+{
+  QMutexLocker lock(&header_map_mutex_);
+  header_map_.clear();
+
+  if (pClient_) {
+    pClient_->SetRequestHeader(header_map_);
+  }
+}
+
+void
 QCefViewPrivate::setCefWindowFocus(bool focus)
 {
   if (pCefBrowser_) {

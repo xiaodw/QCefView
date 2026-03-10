@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #pragma region qt_headers
 #include <QMenu>
 #include <QMutex>
@@ -40,6 +40,9 @@ private:
 
   std::map<std::string, std::string> url_map_;
   QMutex url_map_mutex_;
+
+  std::map<std::string, std::string> header_map_;
+  QMutex header_map_mutex_;
 
 public:
   /// <summary>
@@ -161,6 +164,10 @@ public:
   void setUrlRoutes(const QMap<QString, QString>& routes);
 
   void clearUrlRoutes();
+
+  void setHeader(const QString& key, const QString& value);
+
+  void clearHeader();
 
   void setCefWindowFocus(bool focus);
 
